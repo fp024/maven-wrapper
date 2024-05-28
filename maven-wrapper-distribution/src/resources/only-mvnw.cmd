@@ -79,9 +79,9 @@ if ($env:MVNW_REPOURL) {
 $distributionUrlName = $distributionUrl -replace '^.*/',''
 $distributionUrlNameMain = $distributionUrlName -replace '\.[^.]*$','' -replace '-bin$',''
 
-$MAVEN_WRAPPER_DISTS = "$HOME/.m2/wrapper/dists"
+$MAVEN_HOME_PATH = "$HOME/.m2"
 if ($env:MAVEN_USER_HOME) {
-  $MAVEN_WRAPPER_DISTS = "$env:MAVEN_USER_HOME/wrapper/dists"
+  $MAVEN_HOME_PATH = "$env:MAVEN_USER_HOME"  
 }
 
 function Get-Real-Path {
@@ -90,13 +90,13 @@ function Get-Real-Path {
   $realPath = $path
   do {
     $beforeFoundPath = $mavenWrapperDists
-    $item = Get-Item -Path $realPath
+    $item = Get-Item -Path $realPath    
     $realPath = $item.Target[0]
   } while ($item.Target -ne $null -and $realPath -ne $beforeFoundPath)
   return $realPath
 }
 
-$MAVEN_WRAPPER_DISTS = Get-Real-Path -path $MAVEN_WRAPPER_DISTS
+$MAVEN_WRAPPER_DISTS = Get-Real-Path -path "$MAVEN_HOME_PATH/wrapper/dists"
 
 $MAVEN_HOME_PARENT = "$MAVEN_WRAPPER_DISTS/$distributionUrlNameMain"
 $MAVEN_HOME_NAME = ([System.Security.Cryptography.MD5]::Create().ComputeHash([byte[]][char[]]$distributionUrl) | ForEach-Object {$_.ToString("x2")}) -join ''
